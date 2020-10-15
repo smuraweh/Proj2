@@ -21,8 +21,8 @@ struct app_info {
 
 struct tree {
     app_info record; // info about application
-    tree *left; // pointer to left subtree
-    tree *right; // pointer to right subtree
+    tree *left = nullptr; // pointer to left subtree
+    tree *right = nullptr; // pointer to right subtree
 };
 
 struct categories {

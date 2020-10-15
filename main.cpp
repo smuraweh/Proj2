@@ -67,8 +67,13 @@ int main() {
         cin >> app.record.price;
         cin.ignore();
 
-        insertBST(&app);
+        struct tree *ptr;
+        ptr = &app;
+
+        insertBST(ptr);
     }
+
+    delete[] myAppStore;
 
     return 0;
 }
@@ -101,6 +106,5 @@ void nodeInsert(tree *parent, tree *insert) {
             parent->right = insert;
         else
             nodeInsert(parent->right, insert);
-
     }
 }
