@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "Structure.cpp"
+#include "prime.cc"
 
 using namespace std;
 
