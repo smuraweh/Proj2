@@ -6,6 +6,7 @@ using namespace std;
 
 
 void insertBST(tree *app);
+void nodeInsert(tree *parent, tree *insert);
 struct categories *myAppStore;
 
 int main() {
@@ -15,15 +16,16 @@ int main() {
     // prompt to ask for user input.
     cout << "Enter the number of categories of applications: ";
     cin >> numCategories;
+    cin.ignore();
 
     // dynamically allocate an array of type "categories" of size n.
     myAppStore = new struct categories[numCategories];
 
     // for-loop gathers category names and adds them to the array.
     for(int i = 0; i < numCategories; i++) {
-        cout << "Enter the category name: ";
         string catName;
-        cin >> catName;
+        cout << "Enter the category name: ";
+        getline(cin, catName);
         myAppStore[i].category = catName;
         myAppStore[i].root = nullptr;
     }
@@ -38,9 +40,10 @@ int main() {
         struct tree app;
         cout << "Enter the app category for app #" << i+1 << ": ";
         cin >> app.record.category;
+        cin.ignore();
 
         cout << "Enter the app name: ";
-        cin >> app.record.app_name;
+        getline(cin, app.record.app_name);
 
         cout << "Enter the version number: ";
         cin >> app.record.version;
@@ -63,7 +66,6 @@ int main() {
         insertBST(&app);
     }
 
-
     return 0;
 }
 
@@ -72,9 +74,27 @@ void insertBST(tree *app) {
     // for loop to find category of app
     for(int i = 0; i < sizeof(*myAppStore); i++) {
         if(app->record.category == myAppStore[i].category) {
-            if(myAppStore[i].root == nullptr)
-                myAppStore[i].root = app; // leave like this or use *?
-        cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored.";
+            if(myAppStore[i].root == nullptr) {
+                myAppStore[i].root = app;
+                cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored." << endl;
+            }
+            else
+                nodeInsert(myAppStore[i].root, app);
         }
+    }
+}
+
+void nodeInsert(tree *parent, tree *insert) {
+    if (insert->record.app_name >= parent->record.app_name) {
+        if (parent->left == nullptr)
+            parent->left = insert;
+        else
+            nodeInsert(parent->left, insert);
+    } else {
+        if (parent->right == nullptr)
+            parent->right = insert;
+        else
+            nodeInsert(parent->right, insert);
+
     }
 }
