@@ -27,5 +27,5 @@ struct tree {
 
 struct categories {
     string category; // name of category
-    tree *root; // points to the root of a tree
+    tree *root = nullptr; // points to the root of a tree
 };

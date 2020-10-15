@@ -34,13 +34,16 @@ int main() {
     int numApps;
     cout << "Enter number of applications to add: ";
     cin >> numApps;
+    cin.ignore();
 
     // for-loop gathers app info and adds them to the array.
     for(int i = 0; i < numApps; i++) {
         struct tree app;
         cout << "Enter the app category for app #" << i+1 << ": ";
-        cin >> app.record.category;
-        cin.ignore();
+        getline(cin, app.record.category);
+
+        //cin >> app.record.category;
+        //cin.ignore();
 
         cout << "Enter the app name: ";
         getline(cin, app.record.app_name);
@@ -62,6 +65,7 @@ int main() {
 
         cout << "Enter the price of the application: ";
         cin >> app.record.price;
+        cin.ignore();
 
         insertBST(&app);
     }
@@ -78,8 +82,10 @@ void insertBST(tree *app) {
                 myAppStore[i].root = app;
                 cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored." << endl;
             }
-            else
+            else {
                 nodeInsert(myAppStore[i].root, app);
+                cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored." << endl;
+            }
         }
     }
 }
