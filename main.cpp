@@ -96,6 +96,8 @@ int main(int argc, char *argv[]) {
             string name = input.substr(9, input.length()-1);
             findApp(name, k);
         }
+        if(input == "no report")
+            break;
     }
     delete[] myAppStore;
 
