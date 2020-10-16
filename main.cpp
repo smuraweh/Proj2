@@ -8,8 +8,11 @@ using namespace std;
 
 void insertBST(tree *app);
 void nodeInsert(tree *parent, tree *insert);
-struct categories *myAppStore;
 int hashTableSize(int numApplications);
+int hashValue(tree * app, int k);
+void hash_function(tree *app, hash_table_entry *table, int pos);
+struct categories *myAppStore;
+struct hash_table_entry *hash_table;
 
 int main() {
 
@@ -38,7 +41,6 @@ int main() {
     cin >> numApps;
     cin.ignore();
 
-    struct hash_table_entry *hash_table;
     int k = hashTableSize(numApps);
     hash_table = new struct hash_table_entry[k];
 
@@ -76,10 +78,11 @@ int main() {
         struct tree *ptr;
         ptr = &app;
 
-        insertBST(ptr);
-    }
+        insertBST(ptr); // inserts to Binary Search Tree
 
-    //cout << "Hash Table Size: "<< hashTableSize(numApps)<< endl;
+        int hashPos = hashValue(ptr, k);
+        hash_function(ptr, hash_table, hashPos); // hashes to hash table
+    }
 
     delete[] myAppStore;
 
@@ -95,18 +98,16 @@ void insertBST(tree *app) {
         if(app->record.category == myAppStore[i].category) {
 
             // assign the app tree to the root if it is null
-            if(myAppStore[i].root == nullptr) {
+            if(myAppStore[i].root == nullptr)
                 myAppStore[i].root = app;
                 // testing with cout
                 // cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored." << endl;
-            }
 
             // if root is not null, use nodeInsert() to recursively insert to the next available position.
-            else {
+            else
                 nodeInsert(myAppStore[i].root, app);
                 // testing with cout
                 // cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored." << endl;
-            }
         }
     }
 }
@@ -138,4 +139,35 @@ int hashTableSize(int numApplications) {
         k++;
 
     return k;
+}
+
+int hashValue(tree * app, int k) {
+    int sum = 0;
+    int i = 0;
+
+    while (i < app->record.app_name.length()) {
+        sum += app->record.app_name[i];
+        i++;
+    }
+
+    int hashValue = sum%k;
+    return hashValue;
+}
+
+void hash_function(tree *app, hash_table_entry *table, int pos) {
+    // run comparisons to find position
+    if (table[pos].app_name.empty()) {
+            table[pos].app_name = app->record.app_name;
+            table[pos].next = nullptr;
+            table[pos].app_node = app;
+            cout << table[pos].app_name << " was successfully hashed to position " << pos << "." << endl;
+    } else {
+        hash_table_entry *ptr;
+        while (ptr->app_name.empty())
+            ptr = ptr->next;
+        ptr->app_name = app->record.app_name;
+        ptr->next = nullptr;
+        ptr->app_node = app;
+        cout << table[pos].app_name << " was successfully hashed to position " << pos << "." << endl;
+    }
 }
