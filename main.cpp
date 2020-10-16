@@ -11,6 +11,7 @@ void nodeInsert(tree *parent, tree *insert);
 int hashTableSize(int numApplications);
 int hashValue(tree * app, int k);
 void hash_function(tree *app, hash_table_entry *table, int pos);
+void findApp(string appName, int tableSize);
 struct categories *myAppStore;
 struct hash_table_entry *hash_table;
 
@@ -84,6 +85,15 @@ int main(int argc, char *argv[]) {
         hash_function(ptr, hash_table, hashPos); // hashes to hash table
     }
 
+    while(!cin.eof()){
+        string input;
+        getline(cin, input);
+
+        if(input.substr(0, 8) == "find app "){
+            string name = input.substr(9, input.length()-1);
+            findApp(name, k);
+        }
+    }
     delete[] myAppStore;
 
     return 0;
