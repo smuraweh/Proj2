@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
 #include "Structure.cpp"
-#include "prime.cc"
+#include<stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 using namespace std;
 
@@ -12,6 +14,7 @@ int hashTableSize(int numApplications);
 int hashValue(tree * app, int k);
 void hash_function(tree *app, hash_table_entry *table, int pos);
 void findApp(string appName, int tableSize);
+bool TestForPrime( int val );
 struct categories *myAppStore;
 struct hash_table_entry *hash_table;
 
@@ -221,4 +224,12 @@ void findApp(string appName, int tableSize) {
     }
     if(found != true)
         cout << "Application " << appName << " not found." << endl;
+}
+
+bool TestForPrime( int val ){
+    int limit, factor = 2;
+    limit = (long)( sqrtf( (float) val ) + 0.5f );
+    while( (factor <= limit) && (val % factor) )
+        factor++;
+    return( factor > limit );
 }

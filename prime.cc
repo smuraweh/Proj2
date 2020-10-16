@@ -1,4 +1,6 @@
 #include<stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 bool TestForPrime( int val ){
     int limit, factor = 2;

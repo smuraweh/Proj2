@@ -1,6 +1,5 @@
 // This file contains all of the structures for myAppStore.
 
-#include <iostream>
 #include <string>
 
 using namespace std;
