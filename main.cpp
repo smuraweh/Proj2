@@ -163,10 +163,15 @@ void hash_function(tree *app, hash_table_entry *table, int pos) {
             cout << table[pos].app_name << " was successfully hashed to position " << pos << "." << endl;
     } else {
         hash_table_entry *ptr;
-        while (ptr->app_name.empty())
+        /*while (ptr->app_name.empty())
             ptr = ptr->next;
         ptr->app_name = app->record.app_name;
         ptr->next = nullptr;
+        ptr->app_node = app;
+        cout << table[pos].app_name << " was successfully hashed to position " << pos << "." << endl;*/
+
+        ptr->next = &table[pos];
+        ptr->app_name = app->record.app_name;
         ptr->app_node = app;
         cout << table[pos].app_name << " was successfully hashed to position " << pos << "." << endl;
     }
