@@ -5,11 +5,6 @@
 
 using namespace std;
 
-//#define CAT_NAME_LEN 25
-//#define APP_NAME_LEN 50
-//#define VERSION_LEN 10
-//#define UNIT_SIZE 3
-
 struct app_info {
     string category; // name of category
     string app_name; // name of application
@@ -21,11 +16,17 @@ struct app_info {
 
 struct tree {
     app_info record; // info about application
-    tree *left = nullptr; // pointer to left subtree
-    tree *right = nullptr; // pointer to right subtree
+    struct tree *left = nullptr; // pointer to left subtree
+    struct tree *right = nullptr; // pointer to right subtree
 };
 
 struct categories {
     string category; // name of category
-    tree *root = nullptr; // points to the root of a tree
+    struct tree *root = nullptr; // points to the root of a tree
+};
+
+struct hash_table_entry {
+    string app_name; // name of application
+    struct tree *app_node; // pointer to node in tree containing application info
+    struct hash_table_entry *next; // pointer to next entry in chain
 };

@@ -9,6 +9,7 @@ using namespace std;
 void insertBST(tree *app);
 void nodeInsert(tree *parent, tree *insert);
 struct categories *myAppStore;
+int hashTableSize(int numApplications);
 
 int main() {
 
@@ -74,6 +75,8 @@ int main() {
         insertBST(ptr);
     }
 
+    cout << "Hash Table Size: "<< hashTableSize(numApps)<< endl;
+
     delete[] myAppStore;
 
     return 0;
@@ -83,20 +86,30 @@ int main() {
 void insertBST(tree *app) {
     // for loop to find category of app
     for(int i = 0; i < sizeof(*myAppStore); i++) {
+
+        // if the category names are the same
         if(app->record.category == myAppStore[i].category) {
+
+            // assign the app tree to the root if it is null
             if(myAppStore[i].root == nullptr) {
                 myAppStore[i].root = app;
-                cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored." << endl;
+                // testing with cout
+                // cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored." << endl;
             }
+
+            // if root is not null, use nodeInsert() to recursively insert to the next available position.
             else {
                 nodeInsert(myAppStore[i].root, app);
-                cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored." << endl;
+                // testing with cout
+                // cout << "App: " << myAppStore[i].root->record.app_name << " successfully stored." << endl;
             }
         }
     }
 }
 
+// Pass the main tree and the tree to be inserted as pointers (better for memory allocation)
 void nodeInsert(tree *parent, tree *insert) {
+    // run comparisons to find position
     if (insert->record.app_name >= parent->record.app_name) {
         if (parent->left == nullptr)
             parent->left = insert;
@@ -108,4 +121,16 @@ void nodeInsert(tree *parent, tree *insert) {
         else
             nodeInsert(parent->right, insert);
     }
+}
+
+int hashTableSize(int numApplications) {
+    // k is the hash table size
+    int k;
+    k = 2 * numApplications;
+
+    // while loop runs to increment k until it returns prime
+    while (TestForPrime(k) == 0)
+        k++;
+
+    return k;
 }
