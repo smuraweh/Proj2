@@ -38,6 +38,10 @@ int main() {
     cin >> numApps;
     cin.ignore();
 
+    struct hash_table_entry *hash_table;
+    int k = hashTableSize(numApps);
+    hash_table = new struct hash_table_entry[k];
+
     // for-loop gathers app info and adds them to the array.
     for(int i = 0; i < numApps; i++) {
         struct tree app;
@@ -75,7 +79,7 @@ int main() {
         insertBST(ptr);
     }
 
-    cout << "Hash Table Size: "<< hashTableSize(numApps)<< endl;
+    //cout << "Hash Table Size: "<< hashTableSize(numApps)<< endl;
 
     delete[] myAppStore;
 
@@ -123,6 +127,7 @@ void nodeInsert(tree *parent, tree *insert) {
     }
 }
 
+// Returns the value of the hashtable to be allocated
 int hashTableSize(int numApplications) {
     // k is the hash table size
     int k;
