@@ -14,7 +14,7 @@ void hash_function(tree *app, hash_table_entry *table, int pos);
 struct categories *myAppStore;
 struct hash_table_entry *hash_table;
 
-int main() {
+int main(int argc, char *argv[]) {
 
     int numCategories; // number of categories in array.
 
@@ -174,5 +174,41 @@ void hash_function(tree *app, hash_table_entry *table, int pos) {
         ptr->app_name = app->record.app_name;
         ptr->app_node = app;
         cout << table[pos].app_name << " was successfully hashed to position " << pos << "." << endl;
+
+        free(ptr);
     }
+}
+
+void findApp(string appName, int tableSize) {
+    int sum = 0;
+    int i = 0;
+    bool found = false;
+
+    while (i < appName.length()) {
+        sum += appName[i];
+        i++;
+    }
+
+    int pos = sum%tableSize;
+    hash_table_entry *ptr;
+    *ptr = hash_table[pos];
+
+    while(ptr->next != nullptr) {
+        if (ptr->app_name == appName) {
+            cout << "Found Application: " << appName << endl;
+            cout << "\tCategory: " << ptr->app_node->record.category << endl;
+            cout << "\tApplication Name: " << ptr->app_node->record.app_name << endl;
+            cout << "\tVersion: " << ptr->app_node->record.version << endl;
+            cout << "\tSize: " << ptr->app_node->record.size << endl;
+            cout << "\tUnits: " << ptr->app_node->record.units << endl;
+            cout << "\tPrice: $" << ptr->app_node->record.price << endl;
+
+            found = true;
+        }
+        else {
+            ptr = ptr->next;
+        }
+    }
+    if(found != true)
+        cout << "Application " << appName << " not found." << endl;
 }
