@@ -16,7 +16,7 @@ void hash_function(tree *app, hash_table_entry *table, int pos);
 void findApp(string appName, int tableSize);
 bool TestForPrime( int val );
 struct categories *myAppStore;
-struct hash_table_entry *hash_table;
+struct hash_table_entry **hash_table;
 
 int main(int argc, char *argv[]) {
 
@@ -46,46 +46,49 @@ int main(int argc, char *argv[]) {
     cin.ignore();
 
     int k = hashTableSize(numApps);
-    hash_table = new struct hash_table_entry[k];
+    *hash_table = new struct hash_table_entry[k];
 
     // for-loop gathers app info and adds them to the array.
     for(int i = 0; i < numApps; i++) {
-        struct tree app;
+        struct tree * app;
         cout << "Enter the app category for app #" << i+1 << ": ";
-        getline(cin, app.record.category);
+        getline(cin, app->record.category);
 
         //cin >> app.record.category;
         //cin.ignore();
 
-        cout << "Enter the app name: ";
-        getline(cin, app.record.app_name);
+        cout << endl<< "Enter the app name: ";
+        getline(cin, app->record.app_name);
 
-        cout << "Enter the version number: ";
-        cin >> app.record.version;
+        cout << endl<< "Enter the version number: ";
+        cin >> app->record.version;
 
-        cout << "Enter the size of the application: ";
-        cin >> app.record.size;
+        cout << endl << "Enter the size of the application: ";
+        cin >> app->record.size;
 
-        cout << "Enter the units corresponding to the size (MB or GB): ";
+        cout << endl << "Enter the units corresponding to the size (MB or GB): ";
         string units;
         cin >> units;
         while (units != "MB" && units != "GB") {
-            cout << "Please enter either MB or GB for the units: ";
+            cout << endl<< "Please enter either MB or GB for the units: ";
             cin >> units;
         }
-        app.record.units = units;
+        app->record.units = units;
 
-        cout << "Enter the price of the application: ";
-        cin >> app.record.price;
+        cout << endl << "Enter the price of the application: ";
+        cin >> app->record.price;
         cin.ignore();
 
         struct tree *ptr;
-        ptr = &app;
+        ptr = app;
 
         insertBST(ptr); // inserts to Binary Search Tree
 
         int hashPos = hashValue(ptr, k);
-        hash_function(ptr, hash_table, hashPos); // hashes to hash table
+        hash_function(ptr, *hash_table, hashPos); // hashes to hash table
+
+        free(ptr);
+        free(app);
     }
 
     while(!cin.eof()){
@@ -100,6 +103,7 @@ int main(int argc, char *argv[]) {
             break;
     }
     delete[] myAppStore;
+    delete[] hash_table;
 
     return 0;
 }
@@ -206,7 +210,7 @@ void findApp(string appName, int tableSize) {
 
     int pos = sum%tableSize;
     hash_table_entry *ptr;
-    *ptr = hash_table[pos];
+    ptr = hash_table[pos];
 
     while(ptr->next != nullptr) {
         if (ptr->app_name == appName) {
